@@ -21,7 +21,7 @@ from model import imshow, train_model, visualize_model
 show        = True 
 pretrain    = False
 data_dir    = 'data'
-filename    = 'model_out_gauss.pth'
+filename    = './model/model_out_gauss.pth'
 batch_size  = 4       #Number of samples in each batch
 num_workers = 4
 epoch_num   = 200     #Number of epochs to train the network
