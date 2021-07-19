@@ -47,7 +47,6 @@ def torchMax(z):
     return torch.max(z)
 
 def write_images(z,img_name):
-    z = transforms.Grayscale() 
     torchvision.utils.save_image(z,img_name)
 
 def genTrainData(trainSize): 
@@ -55,13 +54,13 @@ def genTrainData(trainSize):
         os.mkdir('two')
     for i in range(trainSize):
         test_mult=multiGauss(2)
-        write_images(test_mult,'./two/img%i.png' %i)
+        write_images(test_mult,'./data/train/two/img%i.png' %i)
     
     if os.path.exists('./data/train/one') is False:
         os.mkdir('one')
     for i in range(trainSize):
         test=singleGauss(SigmaRand(),SigmaRand(),initRand(),initRand())
-        write_images(test,'./one/img%i.png' %i)
+        write_images(test,'./data/train/one/img%i.png' %i)
 
 def genValData(valSize): 
     if os.path.exists('./data/val/two') is False:
