@@ -24,7 +24,7 @@ data_dir    = 'data'
 filename    = 'model_out_gauss.pth'
 batch_size  = 4       #Number of samples in each batch
 num_workers = 4
-epoch_num   = 200    #Number of epochs to train the network
+epoch_num   = 200     #Number of epochs to train the network
 lr          = 0.1     # Learning rate
 # calculate the number of batches per epoch
 data_transforms = {
