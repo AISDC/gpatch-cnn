@@ -2,6 +2,7 @@ import os
 import time
 import copy
 import torch
+import glob
 import random
 import numpy as np
 import matplotlib
@@ -16,15 +17,15 @@ from torch.autograd import Variable
 from torch.optim import lr_scheduler
 from torchvision import datasets, models, transforms
 from PIL import Image as im
-from model import imshow, train_model, visualize_model  
+from model import Gauss2D 
 
 show        = True 
 pretrain    = False
 data_dir    = 'data'
-filename    = './model/model_out_gauss.pth'
-batch_size  = 4       #Number of samples in each batch
+filename    = 'model_out_gauss.pth'
+batch_size  = 10       #Number of samples in each batch
 num_workers = 4
-epoch_num   = 200     #Number of epochs to train the network
+epoch_num   = 10     #Number of epochs to train the network
 lr          = 0.1     # Learning rate
 # calculate the number of batches per epoch
 data_transforms = {
@@ -49,10 +50,7 @@ inputs, classes = next(iter(dataloaders['train']))
 # Make a grid from batch
 out = torchvision.utils.make_grid(inputs)
 
-imshow(out,title=[class_names[x] for x in classes], fname='initial.jpg')
-for x in classes: 
-    print(class_names[x])
-
+Gauss2D.imshow(out,title=[class_names[x] for x in classes], fname='initial.jpg', show=True)
 
 model_ft = models.resnet18(pretrained=pretrain)
 if torch.cuda.device_count() > 1: 
@@ -65,8 +63,13 @@ criterion = nn.CrossEntropyLoss()
 optimizer_ft = optim.SGD(model_ft.parameters(), lr=lr, momentum=0.9)
 exp_lr_scheduler = lr_scheduler.StepLR(optimizer_ft, step_size=10, gamma=0.1)
 
-model_ft = train_model(model_ft, criterion, optimizer_ft, exp_lr_scheduler,
+model_ft = Gauss2D.train_model(model_ft, criterion, optimizer_ft, exp_lr_scheduler,
                        num_epochs=epoch_num, dataloaders=dataloaders, device=device,dataset_sizes=dataset_sizes)
 torch.save(model_ft.state_dict(), filename)
 
-visualize_model(model_ft,num_images=10,device=device,dataloaders=dataloaders,class_names=class_names)
+Gauss2D.visualize_model(model_ft,num_images=10,device=device,dataloaders=dataloaders,class_names=class_names)
+
+for image in glob.glob('./data/val/two/*.png'):
+    data = im.open(image)
+    prediction = Gauss2D.predict(data,model_ft,device,class_names)
+    print(prediction)
