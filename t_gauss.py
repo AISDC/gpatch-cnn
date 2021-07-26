@@ -18,7 +18,7 @@ from torchvision import datasets, models, transforms
 from PIL import Image as im
 
 def singleGauss(amp,sigma_x,sigma_y,x0,y0):
-    size = 2048
+    size = 11#2048
     x    = torch.linspace(-1, 1, size)
     y    = torch.linspace(-1, 1, size)
     x, y = torch.meshgrid(x, y)
@@ -27,7 +27,7 @@ def singleGauss(amp,sigma_x,sigma_y,x0,y0):
     return z
 
 def AmpRand():
-    return random.random()
+    return 1 #random.random()
 
 def SigmaRand():
     return random.random()*0.5
@@ -36,7 +36,7 @@ def initRand():
     return random.random()*0.5
 
 def multiGauss(n):
-    size = 2048
+    size = 11#2048
     z = torch.zeros(size=(size,size))
     for i in range(n):
         z_i   = singleGauss(AmpRand(),SigmaRand(),SigmaRand(),initRand(),initRand())
@@ -51,15 +51,15 @@ def write_images(z,img_name):
 
 def genTrainData(trainSize): 
     if os.path.exists('./data/train/two') is False:
-        os.mkdir('two')
+        os.mkdir('./data/train/two')
     for i in range(trainSize):
         test_mult=multiGauss(2)
         write_images(test_mult,'./data/train/two/img%i.png' %i)
     
     if os.path.exists('./data/train/one') is False:
-        os.mkdir('one')
+        os.mkdir('./data/train/one')
     for i in range(trainSize):
-        test=singleGauss(SigmaRand(),SigmaRand(),initRand(),initRand())
+        test=singleGauss(SigmaRand(),SigmaRand(),initRand(),initRand(),initRand())
         write_images(test,'./data/train/one/img%i.png' %i)
 
 def genValData(valSize): 
@@ -72,6 +72,6 @@ def genValData(valSize):
     if os.path.exists('./data/val/one') is False:
         os.mkdir('./data/val/one')
     for i in range(valSize):
-        test=singleGauss(SigmaRand(),SigmaRand(),initRand(),initRand())
+        test=singleGauss(SigmaRand(),SigmaRand(),initRand(),initRand(),initRand())
         write_images(test,'./data/val/one/img%i.png' %i)
 
