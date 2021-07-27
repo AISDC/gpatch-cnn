@@ -29,8 +29,8 @@ epoch_num   = 10     #Number of epochs to train the network
 lr          = 0.1     # Learning rate
 # calculate the number of batches per epoch
 data_transforms = {
-    'train': transforms.ToTensor(),
-    'val': transforms.ToTensor()
+    'train': transforms.Compose([transforms.Resize(11),transforms.ToTensor()]),
+    'val': transforms.Compose([transforms.Resize(11),transforms.ToTensor()])
 }
 
 image_datasets = {x: datasets.ImageFolder(os.path.join(data_dir, x),
@@ -65,11 +65,10 @@ exp_lr_scheduler = lr_scheduler.StepLR(optimizer_ft, step_size=10, gamma=0.1)
 
 model_ft = Gauss2D.train_model(model_ft, criterion, optimizer_ft, exp_lr_scheduler,
                        num_epochs=epoch_num, dataloaders=dataloaders, device=device,dataset_sizes=dataset_sizes)
-torch.save(model_ft.state_dict(), filename)
+torch.save(model_ft, filename)
 
 Gauss2D.visualize_model(model_ft,num_images=10,device=device,dataloaders=dataloaders,class_names=class_names)
 
-for image in glob.glob('./data/val/two/*.png'):
+for image in glob.glob('./data_test/*.png'):
     data = im.open(image)
     prediction = Gauss2D.predict(data,model_ft,device,class_names)
-    print(prediction)
