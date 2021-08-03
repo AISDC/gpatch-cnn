@@ -5,7 +5,6 @@ import torch
 import random
 import numpy as np
 import matplotlib
-matplotlib.use('Agg')
 import torchvision
 import torch.nn as nn
 import torch.optim as optim
