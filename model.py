@@ -25,18 +25,17 @@ class Gauss2D(torch.nn.Module):
         best_acc = 0.0
     
         for ep in range(num_epochs):  # epochs loop
-           print('Epoch {}/{}'.format(ep, num_epochs - 1))
+           print('Epoch %i/%i' %(ep, num_epochs - 1))
            print('-' * 10)
         
            for phase in ['train', 'val']:
+               running_loss = 0.0
+               running_corrects = 0.0
                if phase == 'train':
                    scheduler.step()
                    model.train()  # Set model to training mode
                else:
                    model.eval()   # Set model to evaluate mode
-        
-               running_loss = 0.0
-               running_corrects = 0
         
                # Iterate over data.
                for inputs, labels in dataloaders[phase]:
