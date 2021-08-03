@@ -91,6 +91,7 @@ class Gauss2D(torch.nn.Module):
         #std = np.array([0.229, 0.224, 0.225])
         #inp = std * inp + mean
         #inp = np.clip(inp, 0, 1)
+        plt.figure()
         if show is True:
             plt.imshow(inp)
         if title is not None:
