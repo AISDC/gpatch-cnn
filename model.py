@@ -32,7 +32,6 @@ class Gauss2D(torch.nn.Module):
                running_loss = 0.0
                running_corrects = 0.0
                if phase == 'train':
-                   scheduler.step()
                    model.train()  # Set model to training mode
                else:
                    model.eval()   # Set model to evaluate mode
