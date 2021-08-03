@@ -17,7 +17,7 @@ from torchvision import datasets, models, transforms
 from PIL import Image as im
 
 def singleGauss(amp,sigma_x,sigma_y,x0,y0):
-    size = 11#2048
+    size = 2048
     x    = torch.linspace(-1, 1, size)
     y    = torch.linspace(-1, 1, size)
     x, y = torch.meshgrid(x, y)
@@ -35,7 +35,7 @@ def initRand():
     return random.random()*0.5
 
 def multiGauss(n):
-    size = 11#2048
+    size = 2048
     z = torch.zeros(size=(size,size))
     for i in range(n):
         z_i   = singleGauss(AmpRand(),SigmaRand(),SigmaRand(),initRand(),initRand())
