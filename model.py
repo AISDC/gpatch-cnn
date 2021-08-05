@@ -133,7 +133,7 @@ class Gauss2D(torch.nn.Module):
 
     def predict(data, model, device, class_names):
         model.eval()
-        transform = transforms.ToTensor()
+        transform = transforms.Compose([transforms.Resize(11),transforms.ToTensor()])
         data = transform(data).float()
         data = data.unsqueeze_(0)
         data = Variable(data)
