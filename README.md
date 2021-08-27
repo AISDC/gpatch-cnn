@@ -1,4 +1,4 @@
-# GaussCNNTest
- Classifier in BraggNN pipline for determining if multiple diffraction peaks are present in a frame
+# gpatch
+ML pipline for evaluating diffraction peaks
 
 ![](https://github.com/dptru10/GaussCNNTest/blob/main/img/model_predict.jpg)
