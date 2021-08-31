@@ -41,7 +41,7 @@ summed_square_distance=[]
 calinski_score=[]
 
 for i in clusters:
-    cluster_ids,cluster_centers=kmeans(X=images,n_clusters=i,init='random',random_state=1,distance='euclidean',device=torch.device('cuda'))
+    cluster_ids,cluster_centers=kmeans(X=images,num_clusters=i,distance='euclidean',device=torch.device('cuda'))
     calinski_score.append(calinski_harabasz_score(images,cluster_ids))
 
 idx_max = max(range(len(calinski_score)),key=calinski_score.__getitem__)
@@ -54,7 +54,7 @@ plt.show()
 
 
 print(n_clusters)
-labels,centers = kmeans(X=images,n_clusters=n_clusters,init='random',random_state=1,distance='euclidean',device=torch.device('cuda'))
+labels,centers = kmeans(X=images,num_clusters=n_clusters,distance='euclidean',device=torch.device('cuda'))
 Y = labels
 
 
