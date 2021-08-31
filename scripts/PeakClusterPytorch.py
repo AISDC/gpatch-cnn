@@ -16,10 +16,11 @@ from scipy.interpolate import UnivariateSpline
 from torchvision import datasets, models, transforms, utils
 from sklearn.preprocessing import StandardScaler
 
-data_dir        = 'sensor_frames'
+data_dir        = 'patches/img_0'
 num_workers     = 8
-#crop_size       = 8
+crop_size       = 8
 data_transforms = transforms.Compose([transforms.Grayscale(),
+                                      transforms.CenterCrop(crop_size),
                                       transforms.ToTensor()])
 device          = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
@@ -42,7 +43,7 @@ calinski_score=[]
 
 for i in clusters:
     cluster_ids,cluster_centers=kmeans(X=images,num_clusters=i,distance='euclidean',device=torch.device('cuda'))
-    calinski_score.append(calinski_harabasz_score(images,cluster_ids))
+    calinski_score.append(calinski_harabasz_score(images.cpu().numpy(),cluster_ids))
 
 idx_max = max(range(len(calinski_score)),key=calinski_score.__getitem__)
 n_clusters=idx_max + min(clusters)
