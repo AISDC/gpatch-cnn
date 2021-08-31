@@ -21,7 +21,7 @@ num_workers     = 8
 #crop_size       = 8
 data_transforms = transforms.Compose([transforms.Grayscale(),
                                       transforms.ToTensor()])
-device          = torch.device("cpu")#cuda" if torch.cuda.is_available() else "cpu")
+device          = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 
 image_dataset   = datasets.ImageFolder(os.path.join(data_dir),data_transforms)
@@ -31,7 +31,7 @@ images = images.to(device, torch.uint8)
 
 
 images = images.reshape(len(images),-1)
-images = images.cpu().numpy()
+#images = images.cpu().numpy()
 #images = StandardScaler().fit_transform(images)
 
 
