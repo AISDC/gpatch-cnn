@@ -63,7 +63,7 @@ n_clusters=idx_max + min(clusters)
 
 plt.figure() 
 plt.plot(clusters,spline_d2(clusters))
-plt.show() 
+plt.savefig('d2_ssd.png') 
 
 print(n_clusters)
 model = KMeans(n_clusters=n_clusters, random_state=0)
@@ -104,7 +104,6 @@ def infer_cluster_labels(kmeans, actual_labels):
             counts = np.bincount(labels[0])
         else:
             counts = np.bincount(np.squeeze(labels))
-        print(counts)    
         # assign the cluster to a value in the inferred_labels dictionary
         if np.argmax(counts) in inferred_labels:
             # append the new number to the existing array at this slot
@@ -114,7 +113,6 @@ def infer_cluster_labels(kmeans, actual_labels):
             inferred_labels[np.argmax(counts)] = [i]
 
         #print(labels)
-        print('Cluster: {}, label: {}'.format(i, np.argmax(counts)))
     
     return inferred_labels
 
@@ -125,14 +123,11 @@ images *= 255
 images = images.astype(np.uint8)
 
 
-print(n_clusters)
-print(labels)
-print(Y)
 # determine cluster labels
 cluster_labels = infer_cluster_labels(model, Y)
 
 # create figure with subplots using matplotlib.pyplot
-fig, axs = plt.subplots(1, 5, figsize = (20, 20))
+fig, axs = plt.subplots(n_clusters, 1, figsize = (20, 20))
 plt.gray()
 
 # loop through subplots and add centroid images
@@ -148,4 +143,4 @@ for i, ax in enumerate(axs.flat):
     ax.axis('off')
     
 # display the figure
-fig.show()
+fig.savefig("centroid_img.png")
