@@ -1,9 +1,6 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[1]:
-
-
 import os 
 import torch 
 import matplotlib 
@@ -19,12 +16,9 @@ from scipy.interpolate import UnivariateSpline
 from torchvision import datasets, models, transforms, utils
 from sklearn.preprocessing import StandardScaler
 
-
-
-
 data_dir        = 'patches'
 num_workers     = 4
-crop_size       = 8
+crop_size       = 11
 data_transforms = transforms.Compose([transforms.CenterCrop(crop_size),
                                       transforms.Grayscale(),
                                       transforms.ToTensor()])
@@ -33,12 +27,11 @@ device          = torch.device("cpu")#cuda" if torch.cuda.is_available() else "c
 image_dataset   = datasets.ImageFolder(os.path.join(data_dir),data_transforms)
 dataloader      = torch.utils.data.DataLoader(image_dataset,num_workers=num_workers,batch_size=len(image_dataset))
 images,labels   = next(iter(dataloader))
+print("number of images in dataset: %i" %(len(image_dataset)))
 
 images = images.to(device, torch.uint8)
-
 images = images.reshape(len(images),-1)
-images = images.cpu().numpy() 
-
+images = np.array(images) 
 
 clusters=range(2,20) 
 
@@ -51,7 +44,6 @@ for i in clusters:
     summed_square_distance.append(kmeans.inertia_)
     calinski_score.append(calinski_harabasz_score(images,kmeans.labels_))
 
-
 #2nd derivative of elbow curve to find optimal number of clusters 
 spline    = UnivariateSpline(clusters,summed_square_distance)
 spline_d2 = spline.derivative(n=3) 
@@ -59,7 +51,6 @@ spline_d2 = spline.derivative(n=3)
 d2_list = list(spline_d2(clusters))
 idx_max = max(range(len(d2_list)),key=d2_list.__getitem__)
 n_clusters=idx_max + min(clusters)
-
 
 plt.figure() 
 plt.plot(clusters,spline_d2(clusters))
@@ -127,7 +118,7 @@ images = images.astype(np.uint8)
 cluster_labels = infer_cluster_labels(model, Y)
 
 # create figure with subplots using matplotlib.pyplot
-fig, axs = plt.subplots(n_clusters, 1, figsize = (20, 20))
+fig, axs = plt.subplots(int(n_clusters/int(np.sqrt(n_clusters))), int(np.sqrt(n_clusters)), figsize = (20, 20))
 plt.gray()
 
 # loop through subplots and add centroid images
