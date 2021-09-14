@@ -1,4 +1,4 @@
-# gpatch
+# gpatch-cnn
 
 CNN for classifying diffraction peaks with some demos for training, doing inference on new data, and explainable AI via attribution masks. 
 
