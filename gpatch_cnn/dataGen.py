@@ -1,4 +1,4 @@
-from t_gauss import genTrainData, genValData
+from gpatch_cnn.t_gauss import genTrainData, genValData
 
 train_split = 0.9 
 num_images  = 2000
