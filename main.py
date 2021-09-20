@@ -17,7 +17,7 @@ from torch.autograd import Variable
 from torch.optim import lr_scheduler
 from torchvision import datasets, models, transforms
 from PIL import Image as im
-from model import Gauss2D 
+from gpatch_cnn.model import Gauss2D 
 
 show        = True 
 pretrain    = False
