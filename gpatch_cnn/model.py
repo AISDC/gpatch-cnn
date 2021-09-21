@@ -8,7 +8,7 @@ import numpy as np
 import torchvision
 import torch.nn as nn
 import torch.optim as optim
-#import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt
 import torch.nn.functional as F
 from torch.autograd import Variable
 from torch.optim import lr_scheduler
