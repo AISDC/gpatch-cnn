@@ -11,7 +11,7 @@ import torch.nn.functional as F
 from torchvision import datasets, transforms, models
 from PIL import Image
 from torch.autograd import Variable
-from model import Gauss2D 
+from gpatch_cnn.model import Gauss2D 
 
 data_dir = 'data/val'
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
