@@ -1,20 +1,7 @@
-import os
-import time
-import copy
 import torch
 import random
 import numpy as np
-#import matplotlib
 import torchvision
-#import torch.nn as nn
-#import torch.optim as optim
-#from skimage import transform
-#import matplotlib.pyplot as plt
-#import torch.nn.functional as F
-#from torch.autograd import Variable
-#from torch.optim import lr_scheduler
-#from torchvision import datasets, models, transforms
-#from PIL import Image as im
 
 def singleGauss(size,amp,sigma_x,sigma_y,x0,y0):
     x    = torch.linspace(-1, 1, size)
@@ -41,35 +28,12 @@ def multiGauss(n,size):
         z    += z_i
     return z
 
-def torchMax(z):
-    return torch.max(z)
-
 def write_images(z,img_name):
     torchvision.utils.save_image(z,img_name)
 
-def genTrainData(patchSize,trainSize): 
-    if os.path.exists('data/train/two') is False:
-        os.mkdir('data/train/two')
+def genData(patchSize,trainSize,n_peaks): 
     for i in range(trainSize):
-        test_mult=multiGauss(2)
-        write_images(test_mult,'data/train/two/img%i.png' %i)
-    
-    if os.path.exists('data/train/one') is False:
-        os.mkdir('data/train/one')
+        mult=multiGauss(n_peaks)
     for i in range(trainSize):
-        test=singleGauss(SigmaRand(),SigmaRand(),initRand(),initRand(),initRand())
-        write_images(test,'data/train/one/img%i.png' %i)
-
-def genValData(patchSize,valSize): 
-    if os.path.exists('data/val/two') is False:
-        os.mkdir('data/val/two')
-    for i in range(valSize):
-        test_mult=multiGauss(patchSize,2)
-        write_images(test_mult,'data/val/two/img%i.png' %i)
-    
-    if os.path.exists('data/val/one') is False:
-        os.mkdir('data/val/one')
-    for i in range(valSize):
-        test=singleGauss(patchSize,SigmaRand(),SigmaRand(),initRand(),initRand(),initRand())
-        write_images(test,'./data/val/one/img%i.png' %i)
-
+        single=singleGauss(SigmaRand(),SigmaRand(),initRand(),initRand(),initRand())
+    return(single,mult)
