@@ -15,24 +15,18 @@ def AmpRand():
     return random.random()
 
 def SigmaRand():
-    return random.random()*0.5
+    return random.random()*0.25
     
 def initRand():
-    return random.random()*0.5
+    return random.random()#*0.5
 
 def multiGauss(n,size):
     z = torch.zeros(size=(size,size))
-    for i in range(n):
+    for i in range(n+1):
         z_i   = singleGauss(size,AmpRand(),SigmaRand(),SigmaRand(),initRand(),initRand())
         z    += z_i
+        z     = torch.functional.normalize(z)
     return z
 
-def write_images(z,img_name):
+def write_image(z,img_name):
     torchvision.utils.save_image(z,img_name)
-
-def genData(size,train_imgs,n_peaks): 
-    for i in range(train_imgs):
-        mult=multiGauss(n_peaks,size)
-    for i in range(train_imgs):
-        single=singleGauss(patchSize,AmpRand(),SigmaRand(),initRand(),initRand(),initRand())
-    return(single,mult)
