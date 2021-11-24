@@ -34,32 +34,28 @@ def multiGauss(n,size):
 #        z     = torch.nn.functional.normalize(z)
     return z
 
-def multiGaussNoOverlap(n,size):
+def multiGaussNoOverlap(n,size,cutoff):
     gauss_list = []
     x_i = initRand()
     y_i = initRand()
     z = torch.zeros(size=(size,size))
-
-    coord_list = [] 
-    coord_init = (initRand(),initRand())
-    coord_list.append(coord_init)
-    cutoff = 0.0
-    i=0
+    i=2
     while i < n:
+        coord_list = [] 
+        coord_init = (initRand(),initRand())        
+        coord_list.append(coord_init)              
         x_i   = initRand() 
         y_i   = initRand()
         for coord in coord_list:
             x_j,y_j = coord 
-            print(coord)
             if distance(x_i,y_i,x_j,y_j) > cutoff:
                 coord_list.append((x_i,y_i))
                 i +=1
-
     for coord in coord_list: 
         x_i,y_i = coord
         z_i   = singleGauss(size,AmpRand(),SigmaRand(),SigmaRand(),x_i,y_i)
         z    += z_i
-#        z     = torch.nn.functional.normalize(z)
+        z     = torch.nn.functional.normalize(z)
     return z
 
 
