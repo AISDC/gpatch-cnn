@@ -35,11 +35,11 @@ def multiGauss(n,size):
     return z
 
 def multiGaussNoOverlap(n,size,cutoff):
-    gauss_list = []
+    coord_list = []
     x_i = initRand()
     y_i = initRand()
     z = torch.zeros(size=(size,size))
-    i=2
+    i=0
     while i < n:
         coord_list = [] 
         coord_init = (initRand(),initRand())        
