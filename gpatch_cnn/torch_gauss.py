@@ -36,18 +36,15 @@ def multiGauss(n,size):
 
 def multiGaussNoOverlap(n,size,cutoff):
     coord_list = []
-    x_i = initRand()
-    y_i = initRand()
     z = torch.zeros(size=(size,size))
     i=0
     while i < n:
-        coord_list = [] 
         coord_init = (initRand(),initRand())        
         coord_list.append(coord_init)              
-        x_i   = initRand() 
-        y_i   = initRand()
         for coord in coord_list:
+            x_i,y_i = initRand(),initRand()
             x_j,y_j = coord 
+            print(distance(x_i,y_i,x_j,y_j))
             if distance(x_i,y_i,x_j,y_j) > cutoff:
                 coord_list.append((x_i,y_i))
                 i +=1
