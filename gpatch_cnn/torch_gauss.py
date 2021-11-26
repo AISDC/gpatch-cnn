@@ -18,7 +18,7 @@ def AmpRand():
 
 def SigmaRand():
     return random.random()*0.5
-    
+
 def initRand():
     return random.random()
 
@@ -36,25 +36,25 @@ def multiGauss(n,size):
 
 def multiGaussNoOverlap(n,size,cutoff):
     coord_list = []
-    if n > 0: 
+    if n > 0:
         #initialize list w/first entry
-        x_i,y_i  = (initRand(),initRand()) 
+        x_i,y_i  = (initRand(),initRand())
         coord_list.append((x_i,y_i))
     while len(coord_list) <  n:
-        #create test x,y              
+        #create test x,y
         x_j,y_j  = (initRand(),initRand())
-        #check that new point is far enough 
-        #from others in list 
+        #check that new point is far enough
+        #from others in list
         for coord in coord_list:
             x_n,y_n = coord
             #if so, add to list
             if distance(x_n,y_n,x_j,y_j) > cutoff:
                 coord_list.append((x_j,y_j))
                 break
-            else: 
+            else:
                 break
     z = torch.zeros(size=(size,size))
-    for coord in coord_list: 
+    for coord in coord_list:
         x_i,y_i = coord
         z_i   = singleGauss(size,AmpRand(),SigmaRand(),SigmaRand(),x_i,y_i)
         z    += z_i
