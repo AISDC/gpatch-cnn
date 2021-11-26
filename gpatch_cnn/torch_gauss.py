@@ -17,7 +17,7 @@ def AmpRand():
     return random.random()
 
 def SigmaRand():
-    return random.random()*0.25
+    return random.random()*0.5
     
 def initRand():
     return random.random()
@@ -31,31 +31,34 @@ def multiGauss(n,size):
     for i in range(n+1):
         z_i   = singleGauss(size,AmpRand(),SigmaRand(),SigmaRand(),initRand(),initRand())
         z    += z_i
-#        z     = torch.nn.functional.normalize(z)
+        z     = torch.nn.functional.normalize(z)
     return z
 
 def multiGaussNoOverlap(n,size,cutoff):
     coord_list = []
-    x_i = initRand()
-    y_i = initRand()
-    z = torch.zeros(size=(size,size))
-    i=0
-    while i < n:
-        coord_list = [] 
-        coord_init = (initRand(),initRand())        
-        coord_list.append(coord_init)              
-        x_i   = initRand() 
-        y_i   = initRand()
+    if n > 0: 
+        #initialize list w/first entry
+        x_i,y_i  = (initRand(),initRand()) 
+        coord_list.append((x_i,y_i))
+    while len(coord_list) <  n:
+        #create test x,y              
+        x_j,y_j  = (initRand(),initRand())
+        #check that new point is far enough 
+        #from others in list 
         for coord in coord_list:
-            x_j,y_j = coord 
-            if distance(x_i,y_i,x_j,y_j) > cutoff:
-                coord_list.append((x_i,y_i))
-                i +=1
+            x_n,y_n = coord
+            #if so, add to list
+            if distance(x_n,y_n,x_j,y_j) > cutoff:
+                coord_list.append((x_j,y_j))
+                break
+            else: 
+                break
+    z = torch.zeros(size=(size,size))
     for coord in coord_list: 
         x_i,y_i = coord
         z_i   = singleGauss(size,AmpRand(),SigmaRand(),SigmaRand(),x_i,y_i)
         z    += z_i
-        z     = torch.nn.functional.normalize(z)
+#        z     = torch.nn.functional.normalize(z)
     return z
 
 
