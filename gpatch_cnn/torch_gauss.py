@@ -6,35 +6,38 @@ from torchvision.ops import box_iou
 from skimage.measure import label, regionprops
 
 def singleGauss(size,amp,sigma_x,sigma_y,x0,y0):
-    x    = torch.linspace(-1, 1, size)
-    y    = torch.linspace(-1, 1, size)
+    x    = torch.linspace(0, 1, size)
+    y    = torch.linspace(0, 1, size)
     x, y = torch.meshgrid(x, y)
     z    = (1/(2*np.pi*sigma_x*sigma_y) * amp*np.exp(-((x-x0)**2/(2*sigma_x**2)
        		+ (y-y0)**2/(2*sigma_y**2))))
     return z
 
 def AmpRand():
-    return random.random()
+    return 1#random.random()
 
 def SigmaRand():
-    return random.random()*0.5
+    return 0.1 #random.random()
 
-def initRand():
-    return random.random()
+def initRand():#min_i,max_i):
+    return random.random()#min_i,max_i)
 
 def distance(x1,y1,x2,y2):
     d_square = (x1-x2)**2 + (y1-y2)**2
     return np.sqrt(d_square)
 
 def multiGauss(n,size):
+    min_i = 0
+    max_i = size
     z = torch.zeros(size=(size,size))
     for i in range(n+1):
-        z_i   = singleGauss(size,AmpRand(),SigmaRand(),SigmaRand(),initRand(),initRand())
+        z_i   = singleGauss(size,AmpRand(),SigmaRand(),SigmaRand(),initRand(min_i,max_i),initRand())
         z    += z_i
-        z     = torch.nn.functional.normalize(z)
     return z
 
 def multiGaussNoOverlap(n,size,cutoff):
+#    min_i = 0
+#    max_i = size
     coord_list = []
     if n > 0:
         #initialize list w/first entry
@@ -58,7 +61,6 @@ def multiGaussNoOverlap(n,size,cutoff):
         x_i,y_i = coord
         z_i   = singleGauss(size,AmpRand(),SigmaRand(),SigmaRand(),x_i,y_i)
         z    += z_i
-#        z     = torch.nn.functional.normalize(z)
     return z
 
 
