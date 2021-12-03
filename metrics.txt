@@ -1,0 +1,68 @@
+#3 gaussians
+train Epoch [1]/[10] running loss: 14.016524 Acc:0.634300
+val Epoch [1]/[10] running loss: 6.610575 Acc:0.745625
+
+train Epoch [2]/[10] running loss: 5.495046 Acc:0.780775
+val Epoch [2]/[10] running loss: 4.307646 Acc:0.883625
+
+train Epoch [3]/[10] running loss: 4.588940 Acc:0.815975
+val Epoch [3]/[10] running loss: 3.723753 Acc:0.880250
+
+train Epoch [4]/[10] running loss: 3.817524 Acc:0.846675
+val Epoch [4]/[10] running loss: 2.759048 Acc:0.914125
+
+
+train Epoch [5]/[10] running loss: 3.557255 Acc:0.858050
+val Epoch [5]/[10] running loss: 3.553860 Acc:0.848500
+
+train Epoch [6]/[10] running loss: 3.310943 Acc:0.868500
+val Epoch [6]/[10] running loss: 3.210156 Acc:0.865750
+
+train Epoch [7]/[10] running loss: 3.047699 Acc:0.878975
+val Epoch [7]/[10] running loss: 2.299701 Acc:0.913500
+
+train Epoch [8]/[10] running loss: 2.795704 Acc:0.892075
+val Epoch [8]/[10] running loss: 2.195174 Acc:0.921500
+
+train Epoch [9]/[10] running loss: 2.554235 Acc:0.902075
+val Epoch [9]/[10] running loss: 2.718123 Acc:0.888750
+
+train Epoch [10]/[10] running loss: 2.432759 Acc:0.905025
+val Epoch [10]/[10] running loss: 2.273757 Acc:0.914875
+
+Training complete in 72m 52s
+Best val Acc: 0.921500
+
+#4 gaussians
+train Epoch [1]/[10] running loss: 15.289504 Acc:0.557200
+val Epoch [1]/[10] running loss: 7.355501 Acc:0.734000
+
+train Epoch [2]/[10] running loss: 7.046732 Acc:0.699860
+val Epoch [2]/[10] running loss: 5.902121 Acc:0.760400
+
+train Epoch [3]/[10] running loss: 6.083457 Acc:0.740440
+val Epoch [3]/[10] running loss: 5.565806 Acc:0.800400
+
+train Epoch [4]/[10] running loss: 5.713345 Acc:0.755200
+val Epoch [4]/[10] running loss: 4.329112 Acc:0.802300
+
+train Epoch [5]/[10] running loss: 5.033873 Acc:0.785040
+val Epoch [5]/[10] running loss: 4.419568 Acc:0.817800
+
+train Epoch [6]/[10] running loss: 4.667054 Acc:0.802780
+val Epoch [6]/[10] running loss: 4.134630 Acc:0.847600
+
+train Epoch [7]/[10] running loss: 4.413874 Acc:0.814980
+val Epoch [7]/[10] running loss: 4.645275 Acc:0.795700
+
+train Epoch [8]/[10] running loss: 4.387509 Acc:0.818260
+val Epoch [8]/[10] running loss: 3.390866 Acc:0.880900
+
+train Epoch [9]/[10] running loss: 3.984971 Acc:0.834940
+val Epoch [9]/[10] running loss: 3.843214 Acc:0.849200
+
+train Epoch [10]/[10] running loss: 3.776732 Acc:0.843960
+val Epoch [10]/[10] running loss: 3.463482 Acc:0.863800
+
+Training complete in 91m 24s
+Best val Acc: 0.880900
