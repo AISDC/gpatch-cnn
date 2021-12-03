@@ -25,9 +25,6 @@ class Gauss2D(torch.nn.Module):
         best_acc = 0.0
     
         for epoch in range(num_epochs):
-            print('Epoch {}/{}'.format(epoch, num_epochs - 1))
-            print('-' * 10)
-
             # Each epoch has a training and validation phase
             for phase in ['train', 'val']:
                 if phase == 'train':
@@ -67,8 +64,13 @@ class Gauss2D(torch.nn.Module):
                 epoch_loss = running_loss / dataset_sizes[phase]
                 epoch_acc = running_corrects.double() / dataset_sizes[phase]
 
-                print('{} Loss: {:.4f} Acc: {:.4f}'.format(
-                    phase, epoch_loss, epoch_acc))
+                print('%s Epoch [%d]/[%d] running loss: %.6f Acc:%.6f' %
+                          (phase, epoch + 1, num_epochs, running_loss/len(dataloaders[phase]),epoch_acc))
+                running_loss = 0.0
+
+
+                #print('{} Loss: {:.4f} Acc: {:.4f}'.format(
+                #    phase, epoch_loss, epoch_acc))
 
                 # deep copy the model
                 if phase == 'val' and epoch_acc > best_acc:
@@ -89,7 +91,7 @@ class Gauss2D(torch.nn.Module):
     
     def imshow(inp, title, fname, show):
         """Imshow for Tensor."""
-        inp = inp.numpy().transpose((1, 2, 0))
+        #inp = inp.numpy().transpose((1, 2, 0))
         #mean = np.array([0.485, 0.456, 0.406])
         #std = np.array([0.229, 0.224, 0.225])
         #inp = std * inp + mean
@@ -133,7 +135,7 @@ class Gauss2D(torch.nn.Module):
 
     def predict(data, model, device, class_names):
         model.eval()
-        transform = transforms.Compose([transforms.Resize(11),transforms.ToTensor()])
+        transform = transforms.Compose([transforms.Resize(),transforms.ToTensor()])
         data = transform(data).float()
         data = data.unsqueeze_(0)
         data = Variable(data)
