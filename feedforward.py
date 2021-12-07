@@ -1,8 +1,3 @@
-# -*- coding: utf-8 -*-
-"""PytorchFeedForward.ipynb
-Simple Feed Forward NN for spectral prediction 
-"""
-
 import pandas as pd
 import numpy as np
 from sklearn.preprocessing import StandardScaler, MinMaxScaler
@@ -17,15 +12,13 @@ from torchvision import datasets, models, transforms
 #model params
 data_dir    = 'data/train'
 num_workers = 8
-epoch_num   = 10       #Number of epochs to train the network
-lr          = 1e-5     # Learning rate
 
 
 #model parameters
 batch_size    = 1
 num_epochs    = 100
 learning_rate = 1e-3
-size_in       = 1 
+size_in       = 1024 
 size_h1       = 100
 size_h2       = 10
 size_out      = 2 
@@ -45,7 +38,7 @@ images = images.reshape(len(images),-1)
 positions = pd.read_csv('positions/train/data.csv') 
 
 X = images
-Y = torch.Tensor(np.array(positions['x']))#,positions_train['y'])
+Y = torch.Tensor(np.array((positions['x'],positions['y'])).reshape(len(positions),2))#,positions_train['y'])
 
 print(X.size(),Y.size())
 
@@ -110,6 +103,14 @@ def train_load_save_model(model_obj, model_path, device):
 from sklearn.model_selection import train_test_split
 X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size=0.3,random_state=2)
 
+X_train = X_train.float()
+y_train = y_train.float() #.view(-1, 1).float()
+
+X_test = X_test.float()
+y_test = y_test.float()#.view(-1, 1).float()
+
+
+print(X_train.size(),y_train.size())
 datasets = torch.utils.data.TensorDataset(X_train, y_train)
 train_iter = torch.utils.data.DataLoader(datasets, batch_size=batch_size, shuffle=True)
 
