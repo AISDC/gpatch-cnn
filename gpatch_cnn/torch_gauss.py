@@ -1,9 +1,11 @@
+import os
 import torch
 import random
+import pandas as pd
 import numpy as np
 import torchvision
-from torchvision.ops import box_iou
-from skimage.measure import label, regionprops
+#from torchvision.ops import box_iou
+#from skimage.measure import label, regionprops
 
 def singleGauss(size,amp,sigma_x,sigma_y,x0,y0):
     x    = torch.linspace(0, 1, size)
@@ -35,9 +37,20 @@ def multiGauss(n,size):
         z    += z_i
     return z
 
-def multiGaussNoOverlap(n,size,cutoff):
+def export_positions(coord_list,n,idx):
+    os.makedirs('positions/pos_%i' %n,exist_ok=True)
+    df = pd.DataFrame(coord_list,columns=['x','y'])
+    df.to_csv('positions/pos_%i/peaks_img_%i.csv' %(n,idx))
+
+def export_pos(coord_list,n,dir_loc):
+    os.makedirs(dir_loc,exist_ok=True)
+    df = pd.DataFrame(coord_list,columns=['x','y'])
+    df.to_csv(dir_loc+'/data.csv' %n)
+
+def multiGaussNoOverlap(n,size,cutoff,idx):
 #    min_i = 0
 #    max_i = size
+    tot_cords  = []
     coord_list = []
     if n > 0:
         #initialize list w/first entry
@@ -61,8 +74,7 @@ def multiGaussNoOverlap(n,size,cutoff):
         x_i,y_i = coord
         z_i   = singleGauss(size,AmpRand(),SigmaRand(),SigmaRand(),x_i,y_i)
         z    += z_i
-    return z
-
+    return z,coord_list
 
 def write_image(z,img_name):
     torchvision.utils.save_image(z,img_name)
