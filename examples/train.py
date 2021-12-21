@@ -4,6 +4,8 @@ import copy
 import torch
 import glob
 import random
+import ray
+from ray import tune
 import numpy as np
 import matplotlib
 matplotlib.use('Agg')
@@ -18,6 +20,7 @@ from torch.optim import lr_scheduler
 from torchvision import datasets, models, transforms
 from PIL import Image as im
 from gpatch_cnn.model import Gauss2D
+from ray.tune.schedulers import AsyncHyperBandScheduler
 
 show        = True
 pretrain    = False
@@ -28,6 +31,12 @@ num_workers = 4
 epoch_num   = 10       #Number of epochs to train the network
 lr          = 1e-5      # Learning rate
 
+config = {
+    "l1": tune.sample_from(lambda _: 2**np.random.randint(2, 9)),
+    "l2": tune.sample_from(lambda _: 2**np.random.randint(2, 9)),
+    "lr": tune.loguniform(1e-4, 1e-1),
+    "batch_size": tune.choice([2, 4, 8, 16])
+}
 
 # calculate the number of batches per epoch
 data_transforms = {
@@ -51,10 +60,33 @@ print(device)
 # Get a batch of training data
 inputs, classes = next(iter(dataloaders['train']))
 
-# Make a grid from batch
-out = torchvision.utils.make_grid(inputs)
+'''
+sched = AsyncHyperBandScheduler()
 
-Gauss2D.imshow(out,title=[class_names[x] for x in classes], fname='initial.jpg', show=True)
+analysis = tune.run(
+    train_mnist,
+    metric="mean_accuracy",
+    mode="max",
+    name="exp",
+    scheduler=sched,
+    stop={
+        "mean_accuracy": 0.98,
+        "training_iteration": 5 if args.smoke_test else 100
+    },
+    resources_per_trial={
+        "cpu": 2,
+        "gpu": int(args.cuda)  # set this for GPUs
+    },
+    num_samples=1 if args.smoke_test else 50,
+    config={
+        "lr": tune.loguniform(1e-4, 1e-2),
+        "momentum": tune.uniform(0.1, 0.9),
+    })
+
+print("Best config is:", analysis.best_config)
+'''
+
+
 
 model_ft = models.resnet18(pretrained=pretrain)
 if torch.cuda.device_count() > 1:
