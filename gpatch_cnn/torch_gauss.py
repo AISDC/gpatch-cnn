@@ -16,17 +16,20 @@ def singleGauss(size,amp,sigma_x,sigma_y,x0,y0):
     return z
 
 def AmpRand():
-    return 1#random.random()
+    return 0.1#random.random()
 
 def SigmaRand():
-    return 0.1 #random.random()
+    return random.random()/8
 
-def initRand():#min_i,max_i):
-    return random.random()#min_i,max_i)
+def initRand():
+    return random.random()
 
 def distance(x1,y1,x2,y2):
     d_square = (x1-x2)**2 + (y1-y2)**2
     return np.sqrt(d_square)
+
+def fwhm(sigma): 
+    return 2*np.sqrt(2*np.log(2)) * sigma
 
 def multiGauss(n,size):
     min_i = 0
@@ -45,11 +48,9 @@ def export_positions(coord_list,n,idx):
 def export_pos(coord_list,n,dir_loc):
     os.makedirs(dir_loc,exist_ok=True)
     df = pd.DataFrame(coord_list,columns=['x','y'])
-    df.to_csv(dir_loc+'/data.csv' %n)
+    df.to_csv(dir_loc+'/data_%i.csv' %n)
 
 def multiGaussNoOverlap(n,size,cutoff,idx):
-#    min_i = 0
-#    max_i = size
     tot_cords  = []
     coord_list = []
     if n > 0:
@@ -59,12 +60,16 @@ def multiGaussNoOverlap(n,size,cutoff,idx):
     while len(coord_list) <  n:
         #create test x,y
         x_j,y_j  = (initRand(),initRand())
+        sigma_x    = SigmaRand() 
+        sigma_y    = SigmaRand() 
+        max_fwhm   = max([fwhm(sigma_x),fwhm(sigma_y)]) 
         #check that new point is far enough
         #from others in list
         for coord in coord_list:
             x_n,y_n = coord
             #if so, add to list
-            if distance(x_n,y_n,x_j,y_j) > cutoff:
+#            if distance(x_n,y_n,x_j,y_j) > cutoff:
+            if distance(x_n,y_n,x_j,y_j) > 2*max_fwhm:
                 coord_list.append((x_j,y_j))
                 break
             else:
