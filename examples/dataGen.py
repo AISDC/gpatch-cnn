@@ -2,13 +2,13 @@ import os
 from gpatch_cnn.torch_gauss import multiGauss, multiGaussNoOverlap, write_image, export_pos 
 
 patch_size  = 32
-n_peaks     = 1
+n_peaks     = 5
 train_n     = 10000
 val_n       = 2000
-cutoff      = 0.4
+cutoff      = 0.6
 
 train_pos=[]
-for n in range(1,n_peaks+1):
+for n in range(n_peaks+1):
     train_path    = 'data/train/%i' %n
     train_pos_dir = 'positions/train'
     os.makedirs(train_path,exist_ok=True)
@@ -19,7 +19,7 @@ for n in range(1,n_peaks+1):
     export_pos(train_pos,n,train_pos_dir)
 
 test_pos=[]
-for n in range(1,n_peaks+1): 
+for n in range(n_peaks+1): 
     val_path     = 'data/val/%i' %n
     test_pos_dir = 'positions/val'
     os.makedirs(val_path,exist_ok=True)
