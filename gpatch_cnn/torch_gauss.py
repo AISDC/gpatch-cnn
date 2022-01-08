@@ -4,25 +4,27 @@ import random
 import pandas as pd
 import numpy as np
 import torchvision
+from PIL import Image
+
 #from torchvision.ops import box_iou
 #from skimage.measure import label, regionprops
 
 def singleGauss(size,amp,sigma_x,sigma_y,x0,y0):
-    x    = torch.linspace(0, 1, size)
-    y    = torch.linspace(0, 1, size)
+    x    = torch.linspace(0,1,size)
+    y    = torch.linspace(0,1,size)
     x, y = torch.meshgrid(x, y)
     z    = (1/(2*np.pi*sigma_x*sigma_y) * amp*np.exp(-((x-x0)**2/(2*sigma_x**2)
        		+ (y-y0)**2/(2*sigma_y**2))))
     return z
 
 def AmpRand():
-    return 0.1#random.random()
+    return random.uniform(0,1)#(1,100)
 
 def SigmaRand():
-    return random.random()/8
+    return random.uniform(0.01,0.05)#(1,100)#random()/8
 
-def initRand():
-    return random.random()
+def initRand(min_i,max_i):
+    return random.uniform(min_i,max_i)
 
 def distance(x1,y1,x2,y2):
     d_square = (x1-x2)**2 + (y1-y2)**2
@@ -33,10 +35,10 @@ def fwhm(sigma):
 
 def multiGauss(n,size):
     min_i = 0
-    max_i = size
+    max_i = 1 
     z = torch.zeros(size=(size,size))
     for i in range(n+1):
-        z_i   = singleGauss(size,AmpRand(),SigmaRand(),SigmaRand(),initRand(min_i,max_i),initRand())
+        z_i   = singleGauss(size,AmpRand(),SigmaRand(),SigmaRand(),initRand(min_i,max_i),initRand(min_i,max_i))
         z    += z_i
     return z
 
@@ -51,15 +53,17 @@ def export_pos(coord_list,n,dir_loc):
     df.to_csv(dir_loc+'/data_%i.csv' %n)
 
 def multiGaussNoOverlap(n,size,cutoff,idx):
+    min_i = 0.1 
+    max_i = 0.9
     tot_cords  = []
     coord_list = []
     if n > 0:
         #initialize list w/first entry
-        x_i,y_i  = (initRand(),initRand())
+        x_i,y_i  = (initRand(min_i,max_i),initRand(min_i,max_i))
         coord_list.append((x_i,y_i))
     while len(coord_list) <  n:
         #create test x,y
-        x_j,y_j  = (initRand(),initRand())
+        x_j,y_j  = (initRand(min_i,max_i),initRand(min_i,max_i))
         sigma_x    = SigmaRand() 
         sigma_y    = SigmaRand() 
         max_fwhm   = max([fwhm(sigma_x),fwhm(sigma_y)]) 
@@ -79,7 +83,11 @@ def multiGaussNoOverlap(n,size,cutoff,idx):
         x_i,y_i = coord
         z_i   = singleGauss(size,AmpRand(),SigmaRand(),SigmaRand(),x_i,y_i)
         z    += z_i
+        #z     = np.linalg.norm(z)
     return z,coord_list
 
 def write_image(z,img_name):
     torchvision.utils.save_image(z,img_name)
+    #im = Image.fromarray(z)
+    #im = im.convert('RGB')	
+    #im.save(img_name)	
