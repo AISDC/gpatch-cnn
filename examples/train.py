@@ -4,8 +4,8 @@ import copy
 import torch
 import glob
 import random
-import ray
-from ray import tune
+#import ray
+#from ray import tune
 import numpy as np
 import matplotlib
 matplotlib.use('Agg')
@@ -20,7 +20,7 @@ from torch.optim import lr_scheduler
 from torchvision import datasets, models, transforms
 from PIL import Image as im
 from gpatch_cnn.model import Gauss2D
-from ray.tune.schedulers import AsyncHyperBandScheduler
+#from ray.tune.schedulers import AsyncHyperBandScheduler
 
 show        = True
 pretrain    = False
@@ -31,13 +31,13 @@ num_workers = 4
 epoch_num   = 10       #Number of epochs to train the network
 lr          = 1e-5      # Learning rate
 
-config = {
+'''config = {
     "l1": tune.sample_from(lambda _: 2**np.random.randint(2, 9)),
     "l2": tune.sample_from(lambda _: 2**np.random.randint(2, 9)),
     "lr": tune.loguniform(1e-4, 1e-1),
     "batch_size": tune.choice([2, 4, 8, 16])
 }
-
+'''
 # calculate the number of batches per epoch
 data_transforms = {
     'train': transforms.ToTensor(),
