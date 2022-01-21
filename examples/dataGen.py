@@ -16,7 +16,7 @@ for n in range(n_peaks+1):
         img,pos = multiGaussNoOverlap(n,patch_size,cutoff,i)
         write_image(img,train_path+'/img_%i.png' %i)
         train_pos.extend(pos)
-    export_pos(train_pos,n,train_pos_dir)
+    #export_pos(train_pos,n,train_pos_dir)
 
 test_pos=[]
 for n in range(n_peaks+1): 
@@ -27,4 +27,4 @@ for n in range(n_peaks+1):
         img,pos = multiGaussNoOverlap(n,patch_size,cutoff,i)
         write_image(img,val_path+'/img_%i.png' %j)
         test_pos.extend(pos)
-    export_pos(test_pos,n,test_pos_dir)
+    #export_pos(test_pos,n,test_pos_dir)
