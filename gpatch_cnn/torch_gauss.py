@@ -73,7 +73,7 @@ def multiGaussNoOverlap(n,size,cutoff,idx):
             x_n,y_n = coord
             #if so, add to list
 #            if distance(x_n,y_n,x_j,y_j) > cutoff:
-            if distance(x_n,y_n,x_j,y_j) > 2*max_fwhm:
+            if distance(x_n,y_n,x_j,y_j) > 3*max_fwhm:
                 coord_list.append((x_j,y_j))
                 break
             else:
